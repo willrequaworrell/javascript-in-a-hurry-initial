@@ -41,3 +41,62 @@ document.querySelector(".weather-group").addEventListener("click", (e) => {
         document.querySelector("p#weather").innerHTML = weatherTextCelsius
     }
 })
+
+// Clock Section 
+
+setInterval( () => {
+    let localTime = new Date()
+    document.querySelector("span[data-time=hours]").textContent = localTime.getHours().toString().padStart(2, "0")
+    document.querySelector("span[data-time=minutes]").textContent = localTime.getMinutes().toString().padStart(2, "0")
+    document.querySelector("span[data-time=seconds]").textContent = localTime.getSeconds().toString().padStart(2, "0")
+}, 1000)
+
+
+// Image Gallery Section 
+
+const images = [
+    {
+        src: "./assets/gallery/image1.jpg" ,
+        alt: "Thumbnail Image 1"
+    },
+    {
+        src: "./assets/gallery/image2.jpg",
+        alt: "Thumbnail Image 2"
+    },
+    
+    {
+        src: "./assets/gallery/image3.jpg",
+        alt: "Thumbnail Image 3"
+    },
+    
+]
+ 
+// <img src="./assets/gallery/image1.jpg" alt="Thumbnail Image 1" data-array-index="0" data-selected="true">
+
+let mainImage = document.querySelector("#gallery > img")
+let thumbnailsContainer = document.querySelector("#gallery > .thumbnails")
+mainImage.src = images[0].src
+mainImage.alt = images[0].alt
+
+images.forEach((image, i) => {
+    let thumbnail = document.createElement("img")
+    thumbnail.src = image.src
+    thumbnail.alt = image.alt
+    thumbnail.dataset.arrayIndex = i
+    thumbnail.dataset.selected = i === 0 ? true : false
+
+    thumbnail.addEventListener("click", (e) => {
+        let selectedIndex = e.target.dataset.arrayIndex
+        let selectedImage = images[selectedIndex]
+        mainImage.src = selectedImage.src
+        mainImage.alt = selectedImage.alt
+
+        thumbnailsContainer.querySelectorAll("img").forEach((img) => [
+            img.dataset.selected = false
+        ])
+
+        e.target.dataset.selected = true
+    })
+
+    thumbnailsContainer.appendChild(thumbnail)
+} )
